@@ -103,6 +103,7 @@ nav a:hover {
 .language-selector {
     position: relative;
     font-family: 'Orbitron', sans-serif;
+    z-index: 10; /* 1. FIX: Ensures dropdown appears above other header items on mobile */
 }
 
 .language-btn {
@@ -289,6 +290,24 @@ input:checked + .slider-track .slider-thumb {
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
+/* --- 2. FOOTER STYLES ADDED --- */
+footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    /* Use variables to match header/nav text */
+    background-color: var(--header-bg); 
+    color: var(--nav-link-color); 
+    font-size: 0.85rem;
+    font-family: 'Roboto Mono', monospace;
+    border-top: 1px solid var(--switch-bg-light);
+    transition: all var(--transition-speed);
+}
+
+.dark-theme footer {
+     border-top: 1px solid var(--switch-bg-dark);
+}
+
+
 /* --- Responsive Design --- */
 
 /* For tablets and smaller devices */
@@ -346,4 +365,3 @@ input:checked + .slider-track .slider-thumb {
         font-size: 1rem;
     }
 }
-
