@@ -1,0 +1,250 @@
+/* --- CSS Variables for Theming --- */
+:root {
+    /* Light Theme (Default) */
+    --bg-color: #f4f7f6;
+    --text-color: #1a1a1a;
+    --accent-color: #007bff;
+    --hero-bg-color: #e0e0e0;
+    --hero-text-color: #ffffff;
+    --nav-link-color: #333;
+    --header-bg: rgba(244, 247, 246, 0.8);
+    --transition-speed: 0.3s;
+
+    /* New variables for custom switch */
+    --switch-bg-light: #e0e0e0; /* Background of the track in light mode */
+    --switch-text-color-light: #555;
+    --switch-thumb-bg-light: #ffffff; /* Background of the moving thumb in light mode */
+    --switch-thumb-icon-color-light: #333; /* This variable might be less relevant for images unless they are monochromatic SVGs */
+
+    --switch-bg-dark: #333; /* Background of the track in dark mode */
+    --switch-text-color-dark: #f0f0f0;
+    --switch-thumb-bg-dark: #ffffff; /* Background of the moving thumb in dark mode */
+    --switch-thumb-icon-color-dark: #333; /* Less relevant for images */
+}
+
+.dark-theme {
+    /* Dark Theme */
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --accent-color: #00e5ff; /* A more 'tech' blue */
+    --hero-bg-color: #1a1a1a;
+    --hero-text-color: #ffffff;
+    --nav-link-color: #f0f0f0;
+    --header-bg: rgba(18, 18, 18, 0.8);
+
+    /* Dark theme switch overrides */
+    --switch-bg-light: var(--switch-bg-dark); /* Track is dark */
+    --switch-text-color-light: var(--switch-text-color-dark);
+    --switch-thumb-bg-light: var(--switch-thumb-bg-dark);
+    --switch-thumb-icon-color-light: var(--switch-thumb-icon-color-dark);
+}
+
+
+/* --- General Styles --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* --- Header & Navigation --- */
+header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+    background-color: var(--header-bg);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    transition: background-color var(--transition-speed);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--nav-link-color);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: color var(--transition-speed), border-color var(--transition-speed);
+}
+
+nav a:hover {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+/* --- CUSTOM THEME SWITCHER STYLES --- */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 180px; /* Overall width of the switch */
+    height: 40px; /* Overall height of the switch */
+    cursor: pointer;
+}
+
+/* Hide default checkbox */
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The visible track of the slider */
+.slider-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--switch-bg-light); /* Base background for light mode */
+    border-radius: 30px; /* Half of height for fully rounded ends */
+    transition: background-color var(--transition-speed);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px; /* Inner padding for text */
+    overflow: hidden; /* Hide parts of text/thumb that are outside */
+}
+
+/* Day/Night text labels */
+.mode-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--switch-text-color-light);
+    user-select: none; /* Prevent text selection */
+    z-index: 1; /* Ensure text is above track but below thumb */
+    transition: color var(--transition-speed);
+}
+
+.mode-text.day {
+    margin-left: 20px; /* Adjust based on thumb size */
+}
+
+.mode-text.night {
+    margin-right: 20px; /* Adjust based on thumb size */
+    opacity: 0.5; /* Slightly faded when not active */
+}
+
+/* The moving thumb (circle/oval with icon) */
+.slider-thumb {
+    position: absolute;
+    content: "";
+    height: 30px; /* Height of the thumb */
+    width: 80px;  /* Width of the thumb */
+    left: 5px;    /* Initial position from left */
+    bottom: 5px;  /* Initial position from bottom */
+    background-color: var(--switch-thumb-bg-light);
+    border-radius: 25px; /* Half of height for rounded ends */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease-in-out, background-color var(--transition-speed);
+    z-index: 2; /* Ensure thumb is on top */
+}
+
+/* Icon styles inside the thumb (UPDATED for images) */
+.slider-thumb .icon-sun,
+.slider-thumb .icon-moon {
+    width: 30px;  /* Set a fixed width for your images */
+    height: 30px; /* Set a fixed height for your images */
+    object-fit: contain; /* Ensure image fits without distortion */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.slider-thumb .icon-moon {
+    position: absolute; /* Position them on top of each other */
+    opacity: 0; /* Moon is hidden by default (Day Mode) */
+}
+
+
+/* --- State when checkbox is checked (Dark Mode) --- */
+input:checked + .slider-track {
+    background-color: var(--switch-bg-dark); /* Track color changes to dark */
+}
+
+input:checked + .slider-track .mode-text.day {
+    opacity: 0.5; /* Day text fades */
+}
+
+input:checked + .slider-track .mode-text.night {
+    opacity: 1; /* Night text becomes active */
+}
+
+input:checked + .slider-track .slider-thumb {
+    transform: translateX(90px); /* Move thumb to the right */
+    background-color: var(--switch-thumb-bg-dark);
+}
+
+input:checked + .slider-track .slider-thumb .icon-sun {
+    opacity: 0; /* Sun fades out */
+}
+
+input:checked + .slider-track .slider-thumb .icon-moon {
+    opacity: 1; /* Moon fades in */
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 2rem;
+    
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('assets/test-recon.gif');
+    
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--hero-text-color);
+}
+
+.hero-content h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    font-weight: 300;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
