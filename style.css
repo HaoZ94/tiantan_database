@@ -72,7 +72,7 @@ header {
     background-color: var(--header-bg);
     backdrop-filter: blur(5px);
     z-index: 100;
-    transition: background-color var(--transition-speed);
+    transition: background-color var(--transition-speed), flex-direction var(--transition-speed), padding var(--transition-speed);
 }
 
 nav ul {
@@ -109,6 +109,7 @@ nav a:hover {
     width: 180px; /* Overall width of the switch */
     height: 40px; /* Overall height of the switch */
     cursor: pointer;
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 }
 
 /* Hide default checkbox */
@@ -145,7 +146,7 @@ nav a:hover {
     color: var(--switch-text-color-light);
     user-select: none; /* Prevent text selection */
     z-index: 1; /* Ensure text is above track but below thumb */
-    transition: color var(--transition-speed);
+    transition: color var(--transition-speed), font-size 0.3s ease-in-out;
 }
 
 .mode-text.day {
@@ -171,7 +172,7 @@ nav a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s ease-in-out, background-color var(--transition-speed);
+    transition: transform 0.3s ease-in-out, background-color var(--transition-speed), width 0.3s ease-in-out, height 0.3s ease-in-out;
     z-index: 2; /* Ensure thumb is on top */
 }
 
@@ -181,7 +182,7 @@ nav a:hover {
     width: 30px;  /* Set a fixed width for your images */
     height: 30px; /* Set a fixed height for your images */
     object-fit: contain; /* Ensure image fits without distortion */
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
 }
 
 .slider-thumb .icon-moon {
@@ -247,4 +248,90 @@ input:checked + .slider-track .slider-thumb .icon-moon {
     font-size: 1.25rem;
     font-weight: 300;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Responsive Design --- */
+
+/* For tablets and smaller devices */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        justify-content: center;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+}
+
+/* For mobile phones */
+@media (max-width: 480px) {
+    header {
+        padding: 1rem 0.5rem;
+    }
+    
+    nav ul {
+        gap: 0.75rem;
+    }
+
+    nav a {
+        font-size: 0.8rem;
+    }
+
+    .hero-section {
+        padding: 0 1rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    /* Adjusting the theme switcher for small screens */
+    .theme-switch {
+        width: 150px;
+        height: 35px;
+    }
+
+    .slider-thumb {
+        width: 70px;
+        height: 25px;
+    }
+    
+    .slider-thumb .icon-sun,
+    .slider-thumb .icon-moon {
+        width: 25px;
+        height: 25px;
+    }
+
+    input:checked + .slider-track .slider-thumb {
+        transform: translateX(75px);
+    }
+    
+    .mode-text {
+        font-size: 0.7rem;
+    }
+    
+    .mode-text.day {
+        margin-left: 15px;
+    }
+
+    .mode-text.night {
+        margin-right: 15px;
+    }
 }
