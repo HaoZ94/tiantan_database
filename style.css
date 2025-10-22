@@ -426,7 +426,7 @@ footer {
 
 /* --- Quick Year Navigation --- */
 .quick-nav {
-    background-color: var(--switch-bg-light);
+    background-color: transparent;
     border-radius: 12px;
     padding: 1.5rem 2rem;
     margin-bottom: 2.5rem;
@@ -434,7 +434,7 @@ footer {
 }
 
 .dark-theme .quick-nav {
-    background-color: var(--switch-bg-dark);
+    background-color: transparent;
     border: 1px solid var(--switch-bg-light);
 }
 
@@ -463,7 +463,7 @@ footer {
     font-size: 0.9rem;
     padding: 0.6rem 1rem;
     border-radius: 20px;
-    border: 1px solid transparent;
+    border: 1px solid ;
     transition: all var(--transition-speed);
 }
 
@@ -507,7 +507,7 @@ footer {
     /* 2. MAKE ITEM A FLEX CONTAINER FOR SIDE-BY-SIDE LAYOUT */
     display: flex;
     justify-content: space-between; /* Pushes citation left, buttons right */
-    align-items: center;          /* Vertically centers them */
+    align-items: center;          /* This property vertically centers the buttons and text. */
     flex-wrap: wrap;              /* Allows them to stack on mobile */
     gap: 1.5rem;                  /* Adds space when they stack */
 
@@ -584,4 +584,3 @@ footer {
     /* In dark mode, nav-link-color is light, so bg-color (dark) is correct */
     /* In light mode, nav-link-color is dark, so bg-color (light) is correct */
     color: var(--bg-color); 
-}
