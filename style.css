@@ -3,7 +3,7 @@
     /* Light Theme (Default) */
     --bg-color: #f4f7f6;
     --text-color: #1a1a1a;
-    --accent-color: #007bff;
+    --accent-color: #427AA1;
     --hero-text-color: #ffffff;
     --nav-link-color: #333;
     --header-bg: rgba(244, 247, 246, 0.8);
@@ -27,7 +27,7 @@
     /* Dark Theme */
     --bg-color: #121212;
     --text-color: #e0e0e0;
-    --accent-color: #00e5ff; /* A more 'tech' blue */
+    --accent-color: #90BAAD;
     --hero-text-color: #ffffff;
     --nav-link-color: #f0f0f0;
     --header-bg: rgba(18, 18, 18, 0.8);
@@ -86,7 +86,7 @@ nav ul {
 nav a {
     text-decoration: none;
     color: var(--nav-link-color);
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Georgia', serif;
     font-weight: 400;
     font-size: 0.9rem;
     padding-bottom: 5px;
@@ -195,7 +195,7 @@ nav a:hover {
 }
 
 .mode-text {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Georgia', sans-serif;
     font-size: 0.7rem; /* Adjusted font size */
     font-weight: 700;
     letter-spacing: 1px;
@@ -277,7 +277,7 @@ input:checked + .slider-track .slider-thumb {
 }
 
 .hero-content h1 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Georgia', serif;
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -364,4 +364,224 @@ footer {
     .hero-content p {
         font-size: 1rem;
     }
+}
+
+/* =================================================
+    4. *** NEW STYLES FOR CONTENT PAGES ***
+=================================================
+*/
+
+/* This container holds the content for new pages */
+.page-content {
+    /* Add padding to account for fixed header */
+    padding-top: 120px; /* Adjust as needed */
+    padding-bottom: 5rem; /* Ensure space above footer */
+    min-height: 100vh; /* Make page at least full height */
+    
+    /* Center the content wrapper */
+    display: flex;
+    justify-content: center;
+}
+
+/* This wrapper gives your content a max width */
+.content-wrapper {
+    width: 100%;
+    max-width: 960px; /* Standard content width */
+    padding: 2rem;
+    /* Text and background colors are already handled 
+       by the body vars (--text-color, --bg-color)! 
+    */
+}
+
+.content-wrapper h1 {
+    font-family: 'Georgia', serif;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent-color); /* Make titles stand out */
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.content-wrapper p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* Adjust padding-top for mobile where header is taller */
+@media (max-width: 768px) {
+    .page-content {
+        padding-top: 180px; /* Header is much taller when stacked */
+    }
+    .content-wrapper h1 {
+        font-size: 2rem;
+    }
+}
+
+/* =================================================
+    5. *** NEW STYLES FOR PUBLICATIONS PAGE ***
+       (UPDATED FOR FONT & LAYOUT)
+=================================================
+*/
+
+/* --- Quick Year Navigation --- */
+.quick-nav {
+    background-color: var(--switch-bg-light);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--switch-bg-dark);
+}
+
+.dark-theme .quick-nav {
+    background-color: var(--switch-bg-dark);
+    border: 1px solid var(--switch-bg-light);
+}
+
+.quick-nav h3 {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.quick-nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.quick-nav li a {
+    display: block;
+    text-decoration: none;
+    background-color: var(--bg-color);
+    color: var(--nav-link-color);
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: all var(--transition-speed);
+}
+
+.quick-nav li a:hover {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Publication Year Sections --- */
+.publication-year {
+    /* Add scroll-margin-top to offset the fixed header when jumping */
+    scroll-margin-top: 150px;
+}
+
+@media (max-width: 768px) {
+    .publication-year {
+        scroll-margin-top: 200px; /* Account for taller mobile header */
+    }
+}
+
+.content-wrapper h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--accent-color);
+}
+
+/* --- Publication List & Items --- */
+.publication-list {
+    list-style: none;
+}
+
+.publication-item {
+    /* 2. MAKE ITEM A FLEX CONTAINER FOR SIDE-BY-SIDE LAYOUT */
+    display: flex;
+    justify-content: space-between; /* Pushes citation left, buttons right */
+    align-items: center;          /* Vertically centers them */
+    flex-wrap: wrap;              /* Allows them to stack on mobile */
+    gap: 1.5rem;                  /* Adds space when they stack */
+
+    padding: 1.5rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--switch-bg-light);
+}
+
+.dark-theme .publication-item {
+    border-bottom: 1px solid var(--switch-bg-dark);
+}
+
+.publication-item:last-child {
+    border-bottom: none;
+}
+
+.citation {
+    /* 1. CHANGE FONT-FAMILY */
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-color);
+    
+    /* Flex properties to make it work in the flex container */
+    flex: 1; /* Allows citation to grow and take available space */
+    min-width: 300px; /* Prevents it from getting too squished */
+    margin-bottom: 0; /* Removed bottom margin, now handled by parent gap */
+}
+
+/* Make author names (like yours) stand out */
+.citation strong {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+/* --- Publication Buttons --- */
+.publication-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    flex-shrink: 0; /* Prevents buttons from shrinking */
+}
+
+.btn-pub {
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.6rem 1.25rem;
+    border-radius: 30px;
+    border: 1.5px solid;
+    transition: all var(--transition-speed);
+}
+
+.btn-pub.online {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.btn-pub.online:hover {
+    background-color: transparent;
+    color: var(--accent-color);
+}
+
+.btn-pub.pdf {
+    background-color: transparent;
+    border-color: var(--nav-link-color);
+    color: var(--nav-link-color);
+}
+
+.btn-pub.pdf:hover {
+    background-color: var(--nav-link-color);
+    /* In dark mode, nav-link-color is light, so bg-color (dark) is correct */
+    /* In light mode, nav-link-color is dark, so bg-color (light) is correct */
+    color: var(--bg-color); 
 }
