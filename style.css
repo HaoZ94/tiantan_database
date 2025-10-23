@@ -463,7 +463,7 @@ footer {
     font-size: 0.9rem;
     padding: 0.6rem 1rem;
     border-radius: 20px;
-    border: 1px solid ;
+    border: 1px solid;
     transition: all var(--transition-speed);
 }
 
@@ -584,3 +584,131 @@ footer {
     /* In dark mode, nav-link-color is light, so bg-color (dark) is correct */
     /* In light mode, nav-link-color is dark, so bg-color (light) is correct */
     color: var(--bg-color); 
+
+}
+
+/* =================================================
+    6. *** NEW STYLES FOR TEAM PAGE ***
+=================================================
+*/
+
+.team-section {
+    margin-bottom: 4rem; /* Space between sections */
+}
+
+.team-grid {
+    display: grid;
+    gap: 2rem; /* Space between member cards */
+}
+
+/* --- Grid Layouts --- */
+
+/* 1. COS (Chief of Service) */
+.cos-grid {
+    grid-template-columns: 1fr;
+    max-width: 300px; /* Make the single COS card not too wide */
+    margin: 0 auto; /* Center it */
+}
+
+/* 2. Consultants */
+.consultant-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 members per row */
+}
+
+/* 3. Interns & Visitors */
+.intern-grid {
+    grid-template-columns: repeat(6, 1fr); /* 6 members per row */
+}
+
+/* --- Member Card Styling --- */
+.team-member-card {
+    text-align: center;
+}
+
+.team-member-img {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Enforces a square shape */
+    object-fit: cover; /* Ensures image covers the square without stretching */
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.team-member-card:hover .team-member-img {
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.team-member-info h4 {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+}
+
+.team-member-info p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    margin-bottom: 0;
+    line-height: 1.4;
+}
+
+/* --- 4. Alumni List --- */
+.alumni-list {
+    list-style: none;
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent-color);
+}
+
+.alumni-list li {
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+    padding-left: 0.5rem;
+}
+
+/* --- Animation Styling --- */
+.team-grid-row {
+    opacity: 0;
+    transform: translateY(30px);
+    /* Base transition for the pop-up */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.team-grid-row.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* --- Team Page Responsive Design --- */
+
+@media (max-width: 960px) {
+    /* Consultants: 4 -> 2 per row */
+    .consultant-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Interns: 6 -> 3 per row */
+    .intern-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    /* Consultants: 2 -> 1 per row */
+    .consultant-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    /* Interns: 3 -> 2 per row */
+    .intern-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

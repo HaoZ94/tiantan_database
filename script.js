@@ -50,4 +50,44 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // --- TEAM PAGE ANIMATION LOGIC (NEW) ---
+    // Check if we are on the team page by looking for a unique container
+    if (document.getElementById('team-page-content')) {
+        
+        // Select all the rows that need to be animated
+        const teamRows = document.querySelectorAll('.team-grid-row');
+
+        const observerOptions = {
+            root: null, // observes intersections relative to the viewport
+            rootMargin: '0px',
+            threshold: 0.1 // Triggers when 10% of the row is visible
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                // When a row is intersecting (visible)
+                if (entry.isIntersecting) {
+                    // Add the 'visible' class to trigger the CSS transition
+                    entry.target.classList.add('visible');
+                    // Stop observing this row so the animation doesn't re-run
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        // Create the Intersection Observer
+        const rowObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+        // Loop over each row to observe it and add a staggered delay
+        teamRows.forEach((row, index) => {
+            // Calculate the delay: 0ms, 200ms, 400ms, etc.
+            const delay = index * 200; 
+            // Apply the delay as an inline style
+            row.style.transitionDelay = `${delay}ms`;
+            
+            // Start observing the row
+            rowObserver.observe(row);
+        });
+    }
 });
