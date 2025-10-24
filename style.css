@@ -623,7 +623,15 @@ footer {
 /* --- Member Card Styling --- */
 .team-member-card {
     text-align: center;
+    cursor: pointer; /* Make card feel clickable */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+/* Add a slight press effect on click */
+.team-member-card:active {
+    transform: scale(0.98);
+}
+
 
 .team-member-img {
     width: 100%;
@@ -710,5 +718,217 @@ footer {
     /* Interns: 3 -> 2 per row */
     .intern-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* =================================================
+    7. *** NEW: TEAM MEMBER DETAIL VIEW STYLES ***
+       (MODIFIED FOR 2-COLUMN LAYOUT)
+=================================================
+*/
+
+/* The main overlay (covers the whole screen) */
+#member-detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(18, 18, 18, 0.7); /* Semi-transparent dark bg */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 200;
+    
+    /* Animation: Hidden by default */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    
+    /* Flex setup to center the card */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+/* The content card */
+#member-detail-card {
+    position: relative;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 960px; /* Made wider for 2-column layout */
+    max-height: 90vh;
+    overflow-y: auto; /* Allow card to scroll if content is tall */
+    
+    display: flex; /* Side-by-side layout */
+    align-items: flex-start;
+    gap: 2.5rem; /* Space between left and right columns */
+    padding: 2.5rem;
+    padding-top: 3rem; /* Extra space for close button */
+
+    /* Animation: Hidden by default (comes in with overlay) */
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.4s ease 0.1s;
+}
+
+/* Close button */
+#detail-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--nav-link-color);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+}
+
+#detail-close-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* --- NEW: Column Styles --- */
+
+/* Left Column (Image + Honors) */
+.detail-left-col {
+    width: 300px; /* Fixed width */
+    flex-shrink: 0; /* Don't let this column shrink */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Image inside the detail card */
+#detail-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Honors box */
+#detail-honors-wrapper {
+    background-color: var(--switch-bg-light);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+.dark-theme #detail-honors-wrapper {
+    background-color: var(--switch-bg-dark);
+    border-color: rgba(255,255,255,0.05);
+}
+
+#detail-honors-wrapper h4 {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--accent-color);
+}
+
+#detail-honors {
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+/* Right Column (Name, Title, Bio) */
+.detail-right-col {
+    flex-grow: 1; /* Take remaining space */
+    min-width: 0; /* Fix flexbox overflow bug */
+    padding-right: 1.5rem; /* Space for close button */
+}
+
+#detail-name {
+    font-family: 'Georgia', serif;
+    font-size: 2.2rem;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+#detail-title {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+
+/* Bio (now a <div>) */
+#detail-bio {
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-color);
+}
+
+/* --- ACTIVE STATE (when detail view is open) --- */
+
+/* Show the overlay */
+body.detail-view-active #member-detail-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Animate the card in */
+body.detail-view-active #member-detail-card {
+    transform: scale(1) translateY(0);
+}
+
+/* The "move" animation for page content */
+body.detail-view-active header,
+body.detail-view-active main,
+body.detail-view-active footer {
+    transition: transform 0.4s ease, filter 0.4s ease;
+    transform: scale(0.95);
+    filter: blur(5px);
+    /* This prevents scrollbars from messing up the layout */
+    overflow: hidden; 
+}
+
+/* Responsive styles for the detail card */
+@media (max-width: 960px) {
+    #member-detail-card {
+        flex-direction: column; /* Stack columns */
+        align-items: center;
+        padding: 1.5rem;
+        padding-top: 3.5rem; /* More space for close btn */
+        text-align: center;
+    }
+    
+    .detail-left-col {
+        width: 100%;
+        max-width: 350px; /* Constrain image/honors width */
+    }
+
+    #detail-img {
+        height: 350px;
+    }
+    
+    .detail-right-col {
+        padding-right: 0;
+    }
+
+    #detail-honors-wrapper {
+        text-align: left; /* Keep honors list readable */
+    }
+
+    #detail-name {
+        font-size: 1.8rem;
+    }
+
+    #detail-title {
+        font-size: 1rem;
     }
 }

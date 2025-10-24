@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     // --- THEME SWITCHER LOGIC ---
+    // ... no changes here ...
     const themeToggle = document.getElementById('checkbox');
     const body = document.body;
 
@@ -32,30 +33,34 @@ document.addEventListener('DOMContentLoaded', () => {
     applyStoredTheme();
 
     // --- LANGUAGE DROPDOWN LOGIC (NEW) ---
+    // ... no changes here ...
     const langButton = document.querySelector('.language-btn');
     const langDropdown = document.querySelector('.language-dropdown');
 
     // Toggle dropdown visibility when the button is clicked
-    langButton.addEventListener('click', (event) => {
-        // Stop the click from closing the menu immediately
-        event.stopPropagation(); 
-        langDropdown.classList.toggle('show');
-    });
+    if (langButton) { // Add check to ensure button exists
+        langButton.addEventListener('click', (event) => {
+            // Stop the click from closing the menu immediately
+            event.stopPropagation(); 
+            if(langDropdown) langDropdown.classList.toggle('show');
+        });
+    }
 
     // Close the dropdown if the user clicks outside of it
     window.addEventListener('click', (event) => {
-        if (!langButton.contains(event.target)) {
-            if (langDropdown.classList.contains('show')) {
+        if (langButton && !langButton.contains(event.target)) {
+            if (langDropdown && langDropdown.classList.contains('show')) {
                 langDropdown.classList.remove('show');
             }
         }
     });
 
-    // --- TEAM PAGE ANIMATION LOGIC (NEW) ---
+    // --- TEAM PAGE LOGIC ---
     // Check if we are on the team page by looking for a unique container
     if (document.getElementById('team-page-content')) {
         
-        // Select all the rows that need to be animated
+        // --- 1. ROW FADE-IN ANIMATION LOGIC ---
+        // ... no changes here ...
         const teamRows = document.querySelectorAll('.team-grid-row');
 
         const observerOptions = {
@@ -89,5 +94,80 @@ document.addEventListener('DOMContentLoaded', () => {
             // Start observing the row
             rowObserver.observe(row);
         });
+
+        // --- 2. NEW: TEAM MEMBER DETAIL VIEW LOGIC (MODIFIED) ---
+        
+        // Select all the clickable member cards
+        const memberCards = document.querySelectorAll('.team-member-card');
+        
+        // Select the overlay and its parts
+        const detailOverlay = document.getElementById('member-detail-overlay');
+        const detailCard = document.getElementById('member-detail-card');
+        const closeBtn = document.getElementById('detail-close-btn');
+        
+        // Select the content elements to populate
+        const detailImg = document.getElementById('detail-img');
+        const detailName = document.getElementById('detail-name');
+        const detailTitle = document.getElementById('detail-title');
+        const detailBio = document.getElementById('detail-bio');
+        // NEW: Select honors elements
+        const detailHonorsWrapper = document.getElementById('detail-honors-wrapper');
+        const detailHonors = document.getElementById('detail-honors');
+        
+        // Add click listener to each card
+        memberCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Get data from the clicked card's data attributes
+                const name = card.dataset.name;
+                const title = card.dataset.title;
+                const bio = card.dataset.bio;
+                const honors = card.dataset.honors; // NEW: Get honors data
+                const imgSrc = card.querySelector('.team-member-img').src;
+                
+                // Populate the detail card
+                if (detailName) detailName.textContent = name;
+                if (detailTitle) detailTitle.textContent = title;
+                
+                // MODIFICATION: Use .innerHTML to render HTML tags like <br>
+                if (detailBio) detailBio.innerHTML = bio; 
+                
+                if (detailImg) {
+                    detailImg.src = imgSrc;
+                    detailImg.alt = `Profile image of ${name}`;
+                }
+
+                // NEW: Populate honors, or hide the section if no honors data exists
+                if (detailHonors && detailHonorsWrapper) {
+                    if (honors) {
+                        detailHonors.innerHTML = honors;
+                        detailHonorsWrapper.style.display = 'block';
+                    } else {
+                        detailHonors.innerHTML = '';
+                        detailHonorsWrapper.style.display = 'none';
+                    }
+                }
+                
+                // Show the overlay by adding class to body
+                document.body.classList.add('detail-view-active');
+            });
+        });
+
+        // Function to close the detail view
+        const closeDetailView = () => {
+            document.body.classList.remove('detail-view-active');
+        };
+
+        // Add click listener to the close button
+        if(closeBtn) closeBtn.addEventListener('click', closeDetailView);
+
+        // Add click listener to the overlay background (to close)
+        if(detailOverlay) {
+            detailOverlay.addEventListener('click', (event) => {
+                // Check if the click is on the overlay itself, not the card
+                if (event.target === detailOverlay) {
+                    closeDetailView();
+                }
+            });
+        }
     }
 });
