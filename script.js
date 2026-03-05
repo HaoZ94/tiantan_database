@@ -20,13 +20,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listener for the theme toggle
     themeToggle.addEventListener('change', () => {
+        let newColor; // <-- NEW
+        
         if (themeToggle.checked) {
             body.classList.add('dark-theme');
             localStorage.setItem('theme', 'dark');
+            newColor = '#121212'; // <-- NEW (Dark theme bg)
         } else {
             body.classList.remove('dark-theme');
             localStorage.setItem('theme', 'light');
+            newColor = '#f4f7f6'; // <-- NEW (Light theme bg)
         }
+
+        // --- NEW: Update brain viewer background if it exists ---
+        if (window.viewer && typeof window.viewer.setClearColor === 'function') {
+            window.viewer.setClearColor(newColor);
+            window.viewer.updated = true; // Tell viewer to re-render
+        }
+        // --- END NEW ---
     });
 
     // Apply the theme when the page loads
@@ -170,4 +181,178 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+    // --- BRAIN RESOURCES PAGE LOGIC ---
+    if (document.getElementById('brain-resources-page')) {
+        // Tab logic
+        const tabButtons = document.querySelectorAll('.brain-tab');
+        const tabContents = document.querySelectorAll('.brain-tab-content');
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.dataset.target;
+
+                tabButtons.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                btn.classList.add('active');
+                const target = document.getElementById(targetId);
+                if (target) target.classList.add('active');
+            });
+        });
+        const contactX = document.getElementById('contact-x');
+        const contactY = document.getElementById('contact-y');
+        const contactZ = document.getElementById('contact-z');
+        const contactBtn = document.getElementById('contact-update-btn');
+        const contactImg = document.getElementById('contact-image');
+        const contactRegionLabel = document.getElementById('contact-region-label');
+
+        const regionSelect = document.getElementById('region-select');
+        const regionBtn = document.getElementById('region-update-btn');
+        const regionImg = document.getElementById('region-image');
+        const regionCenterLabel = document.getElementById('region-center-label');
+
+        const region3dFrame = document.getElementById('region-3d-frame');
+        const region3dLabel = document.getElementById('region-3d-label');
+
+        // NEW: contact 3D iframe + button
+        const contact3dFrame = document.getElementById('contact-3d-frame');
+        const contact3dBtn = document.getElementById('contact-3d-update-btn');
+
+        // Helper to avoid caching when updating images
+        const cacheBuster = () => `&_=${Date.now()}`;
+
+        // Load dropdown options from backend (/api/regions)
+        const loadRegions = async () => {
+            try {
+                const resp = await fetch('/api/regions');
+                const data = await resp.json();
+                regionSelect.innerHTML = '';
+                data.regions.forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.textContent = name;
+                    regionSelect.appendChild(opt);
+                });
+                // pick the first region as default
+                if (regionSelect.options.length > 0) {
+                    updateRegionImage();
+                    updateRegion3D();
+                }
+            } catch (err) {
+                console.error('Failed to load AAL3 regions:', err);
+            }
+        };
+
+        const updateContactImage = () => {
+            const x = contactX.value || 30.0;
+            const y = contactY.value || -22.0;
+            const z = contactZ.value || 55.0;
+
+            const url = `/api/contact_plot?x=${encodeURIComponent(x)}&y=${encodeURIComponent(y)}&z=${encodeURIComponent(z)}${cacheBuster()}`;
+            contactImg.src = url;
+
+            // When the image loads, try to read region name from header (optional)
+            fetch(url)
+                .then(resp => {
+                    const regionName = resp.headers.get('X-Region-Name');
+                    if (regionName && contactRegionLabel) {
+                        contactRegionLabel.textContent = `Region: ${regionName}`;
+                    }
+                    return resp.blob();
+                })
+                .then(blob => {
+                    contactImg.src = URL.createObjectURL(blob);
+                })
+                .catch(err => console.error('Failed to update contact image:', err));
+        };
+
+        const updateRegionImage = () => {
+            const region = regionSelect.value;
+            if (!region) return;
+
+            const url = `/api/region_plot?region=${encodeURIComponent(region)}${cacheBuster()}`;
+
+            // Update text first
+            if (regionCenterLabel) {
+                regionCenterLabel.textContent = `Region: ${region}`;
+            }
+
+            fetch(url)
+                .then(resp => {
+                    const center = resp.headers.get('X-Region-Center-MNI');
+                    if (center && regionCenterLabel) {
+                        regionCenterLabel.textContent = `Region: ${region} (center MNI: ${center})`;
+                    }
+                    return resp.blob();
+                })
+                .then(blob => {
+                    regionImg.src = URL.createObjectURL(blob);
+                })
+                .catch(err => console.error('Failed to update region image:', err));
+        };
+
+        const updateRegion3D = () => {
+            const region = regionSelect.value;
+            if (!region || !region3dFrame) return;
+
+            const url = `/view_region_3d?region=${encodeURIComponent(region)}${cacheBuster()}`;
+            region3dFrame.src = url;
+
+            if (region3dLabel) {
+                region3dLabel.textContent = `Region: ${region}`;
+            }
+        };
+
+        const updateContact3D = () => {
+            if (!contact3dFrame) return;
+
+            const x = contactX.value || 30.0;
+            const y = contactY.value || -22.0;
+            const z = contactZ.value || 55.0;
+
+            const url = `/view_contact_3d?x=${encodeURIComponent(x)}&y=${encodeURIComponent(y)}&z=${encodeURIComponent(z)}${cacheBuster()}`;
+            contact3dFrame.src = url;
+        };
+
+        // Bind events
+        if (contactBtn) {
+            contactBtn.addEventListener('click', () => {
+                updateContactImage();
+                updateContact3D();
+            });
+        }
+
+        [contactX, contactY, contactZ].forEach(input => {
+            if (input) {
+                input.addEventListener('change', () => {
+                    updateContactImage();
+                    updateContact3D();
+                });
+            }
+        });
+
+        if (contact3dBtn) {
+            contact3dBtn.addEventListener('click', updateContact3D);
+        }
+
+        if (regionBtn) {
+            regionBtn.addEventListener('click', () => {
+                updateRegionImage();
+                updateRegion3D();
+            });
+        }
+        if (regionSelect) {
+            regionSelect.addEventListener('change', () => {
+                updateRegionImage();
+                updateRegion3D();
+            });
+        }
+
+        // Initial load
+        updateContactImage();
+        updateContact3D();
+        loadRegions();
+    }
+
 });

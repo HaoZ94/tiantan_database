@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Tiantan NeuroDatabase</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="language-selector">
+            <button class="language-btn">ENG</button>
+            <div class="language-dropdown">
+                <a href="index.html">ENG</a>
+                <a href="index.html">简体中文</a>
+            </div>
+        </div>
+
+        <div class="nav-container">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="research.html">Research</a></li>
+                    <li><a href="team.html">Team</a></li>
+                    <li><a href="publications.html">Publications</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider-track">
+                        <span class="mode-text day">DAY</span>
+                        <span class="mode-text night">DARK</span>
+                        <span class="slider-thumb">
+                        </span>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="content-wrapper">
+            <h1>Contact Us</h1>
+            <p>We welcome inquiries about our research, potential collaborations, and opportunities within our lab. Please feel free to reach out using the information below or by filling out the contact form.</p>
+
+            <div class="contact-grid">
+                
+                <div class="contact-details">
+                    <h2>Our Location</h2>
+                    <p>
+                        <strong>Beijing Tiantan Hospital</strong><br>
+                        Capital Medical University<br>
+                        119 South Fourth Ring West Road<br>
+                        Fengtai District, Beijing, China
+                    </p>
+                    
+                    <h2>Email</h2>
+                    <p>
+                        <strong>General Inquiries:</strong><br>
+                        <a href="mailto:info.neurodb@tiantan.example.com">info.neurodb@tiantan.example.com</a>
+                    </p>
+                    <p>
+                        <strong>Dr. Kai Zhang (COS):</strong><br>
+                        <a href="mailto:zhang.kai@tiantan.example.com">zhang.kai@tiantan.example.com</a>
+                    </p>
+                    
+                    <h2>Phone</h2>
+                    <p>
+                        +86 (10) 1234-5678 (Lab Office)
+                    </p>
+                </div>
+                
+                <form class="contact-form" action="/api/contact" method="POST">
+                    <h2>Send a Message</h2>
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="6" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-submit">Send Message</button>
+                    </div>
+                </form>
+                
+            </div>
+            </div>
+    </main>
+
+
+    <footer>
+        <p>Copyright © 2025 Tiantan Hospital. Built by Hao Zhu.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
